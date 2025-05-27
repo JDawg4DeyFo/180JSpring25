@@ -1,6 +1,6 @@
 #include <arduinoFFT.h>
 
-arduino FFT FFT;
+arduinoFFT FFT;
 
 const uint16_t SAMPLES = 64;
 const double SAMPLING_FREQUENCY = 1000;
