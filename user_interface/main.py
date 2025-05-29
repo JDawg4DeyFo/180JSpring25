@@ -8,12 +8,12 @@ MaxFrequency = 400
 Resolution = MaxFrequency / Samples
 
 # Open serial port
-ser = serial.Serial('COM3', 115200)
+ser = serial.Serial('/dev/ttyACM0', 115200)
 
 # Set up plot
 plt.ion()
 fig, ax = plt.subplots()
-line, = ax.plot([], []. 'r-')
+line, = ax.plot([], [], 'r-')
 
 # Define and populate plot data
 frequencies = []
@@ -28,13 +28,17 @@ while True:
 	line_data = ser.readline().decode().strip()
 	items = line_data.split(',')
 
+	print(items)
 	# Read thru serial data pairs
 	for i in items:
-		freq, mag = i.split(' ')
+		try:
+			freq, mag = i.split(' ')
+		except:
+			continue
 		# Check that data is valid
 		try:
-			float(freq)
-			float(mag)
+			freq = float(freq)
+			mag = float(mag)
 		except:
 			continue
 
@@ -42,6 +46,10 @@ while True:
 		# Find proper index value
 		Index = (freq + (Resolution / 2)) / Resolution
 		math.floor(Index)
+
+		Index = max(0, min(Index, Samples))
+
+		Index = int(Index)
 
 		# Update plot data
 		magnitudes[Index] = mag
