@@ -2,8 +2,8 @@
 
 arduinoFFT FFT;
 
-const uint16_t SAMPLES = 64;
-const double SAMPLING_FREQUENCY = 1000;
+const uint16_t SAMPLES = 128;
+const double SAMPLING_FREQUENCY = 800;
 
 double vReal[Samples];
 double vImage[SAMPLES];
