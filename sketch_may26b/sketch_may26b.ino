@@ -1,16 +1,16 @@
 #include <arduinoFFT.h>
 
-arduinoFFT FFT;
-
 const uint16_t SAMPLES = 128;
-const double SAMPLING_FREQUENCY = 800;
+const double SAMPLING_FREQUENCY = 960;
 
-double vReal[Samples];
-double vImage[SAMPLES];
+double vReal[SAMPLES];
+double vImag[SAMPLES];
+
+ArduinoFFT<double> FFT = ArduinoFFT<double>(vReal, vImag, SAMPLES, SAMPLING_FREQUENCY);
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 void loop() {
@@ -21,13 +21,13 @@ void loop() {
     delayMicroseconds(1000);
   }
 
-  FFT.Windowing(vReal, SAMPLES, FFT_WIN_TYP_HAMMING, FFT_FORWARD);
-  FFT.Compute(vReal, vImag, SAMPLES, FFT_FORWARD);
-  FFT.ComplexToMagnitude(vReal, vImag, SAMPLES);
+  FFT.windowing(vReal, SAMPLES, FFT_WIN_TYP_HAMMING, FFT_FORWARD);
+  FFT.compute(vReal, vImag, SAMPLES, FFT_FORWARD);
+  FFT.complexToMagnitude(vReal, vImag, SAMPLES);
 
   for (int i = 1; i < (SAMPLES / 2); i++) {
     Serial.print((i * SAMPLING_FREQUENCY) / SAMPLES);
-    Serial.print(" Hz: ");
+    Serial.print(" ");
     Serial.println(vReal[i]);
   }
 
